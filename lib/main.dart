@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Livchat',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.lightGreen,
         appBarTheme: const AppBarTheme(
           centerTitle: true,
           iconTheme: IconThemeData(color: Colors.black),
