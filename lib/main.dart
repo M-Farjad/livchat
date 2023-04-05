@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'screens/auth/login_screen.dart';
 
+late Size mq;
+
 void main() {
   runApp(const MyApp());
 }
