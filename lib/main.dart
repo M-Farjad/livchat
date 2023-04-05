@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
+import 'screens/auth/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,15 +15,16 @@ class MyApp extends StatelessWidget {
       title: 'Livchat',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primarySwatch: Colors.green,
-          appBarTheme: const AppBarTheme(
-            centerTitle: true,
-            iconTheme: IconThemeData(color: Colors.black),
-            elevation: 1,
-            titleTextStyle: TextStyle(color: Colors.black, fontSize: 19),
-            backgroundColor: Colors.white,
-          )),
-      home: const HomeScreen(),
+        primarySwatch: Colors.green,
+        appBarTheme: const AppBarTheme(
+          centerTitle: true,
+          iconTheme: IconThemeData(color: Colors.black),
+          elevation: 1,
+          titleTextStyle: TextStyle(color: Colors.black, fontSize: 19),
+          backgroundColor: Colors.white,
+        ),
+      ),
+      home: const LoginScreen(),
     );
   }
 }
