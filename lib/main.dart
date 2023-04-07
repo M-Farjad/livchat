@@ -1,9 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'firebase_options.dart';
 import 'screens/auth/login_screen.dart';
 
 late Size mq;
 
 void main() {
+  _initializeFireBase();
   runApp(const MyApp());
 }
 
@@ -30,3 +33,13 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+_initializeFireBase() async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+}
+// Firebase token: 1//03Rrc0MOMm9KsCgYIARAAGAMSNwF-L9IrFNRA4W1ft9GBgkds-OCmsGsvn50K69yxzd8hC5xtVL4LSoIojXidkVRSeGExDqRrYOY 
+
+
+// Platform  Firebase App Id
+// android   1:384644475390:android:35715e266803dd2430b8af
+// ios       1:384644475390:ios:c523708332b9cfd530b8af

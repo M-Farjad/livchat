@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "384644475390",
+    "project_id": "livchat-7e7f3",
+    "storage_bucket": "livchat-7e7f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384644475390:android:35715e266803dd2430b8af",
+        "android_client_info": {
+          "package_name": "com.example.we_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384644475390-ssehr48kedoac2sda9mm8250356jhcr9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWGYSbRqFZp6m2YH3y0cZGouQDSqLZgjs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384644475390-ssehr48kedoac2sda9mm8250356jhcr9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

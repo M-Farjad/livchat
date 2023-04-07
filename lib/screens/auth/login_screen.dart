@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Stack(
           children: [
             AnimatedPositioned(
-              duration: Duration(milliseconds: 2000),
+              duration: const Duration(milliseconds: 2000),
               top: mq.height * 0.15,
               width: mq.width * 0.7,
               // mq.width * 0.15
