@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -48,6 +45,15 @@ class DefaultFirebaseOptions {
         );
     }
   }
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDcAO_cxkfLbwnXTP6li9HEHSU5jnV0qqI',
+    appId: '1:384644475390:web:93d2adcb8a1adb2230b8af',
+    messagingSenderId: '384644475390',
+    projectId: 'livchat-7e7f3',
+    authDomain: 'livchat-7e7f3.firebaseapp.com',
+    storageBucket: 'livchat-7e7f3.appspot.com',
+  );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDWGYSbRqFZp6m2YH3y0cZGouQDSqLZgjs',

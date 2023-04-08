@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../main.dart';
 import '../home_screen.dart';
@@ -24,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget build(BuildContext context) {
-    mq = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -34,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Stack(
           children: [
             AnimatedPositioned(
-              duration: const Duration(milliseconds: 2000),
+              duration: const Duration(milliseconds: 1500),
               top: mq.height * 0.15,
               width: mq.width * 0.7,
               // mq.width * 0.15

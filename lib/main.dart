@@ -2,10 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'screens/auth/login_screen.dart';
+import 'screens/splash_screen.dart';
 
 late Size mq;
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized;
   _initializeFireBase();
   runApp(const MyApp());
 }
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.white,
         ),
       ),
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }
@@ -41,5 +43,6 @@ _initializeFireBase() async {
 
 
 // Platform  Firebase App Id
+// web       1:384644475390:web:93d2adcb8a1adb2230b8af
 // android   1:384644475390:android:35715e266803dd2430b8af
 // ios       1:384644475390:ios:c523708332b9cfd530b8af

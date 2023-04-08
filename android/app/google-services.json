@@ -29,6 +29,13 @@
             {
               "client_id": "384644475390-ssehr48kedoac2sda9mm8250356jhcr9.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "384644475390-vc9tj3pr92crkh7gj3m2g0h5d8akoeso.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.weChat"
+              }
             }
           ]
         }
