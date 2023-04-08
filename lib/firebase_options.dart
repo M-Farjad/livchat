@@ -69,6 +69,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '384644475390',
     projectId: 'livchat-7e7f3',
     storageBucket: 'livchat-7e7f3.appspot.com',
+    androidClientId: '384644475390-ut3082l0fsca5h8v8dmokkd9isd3ok25.apps.googleusercontent.com',
     iosClientId: '384644475390-vc9tj3pr92crkh7gj3m2g0h5d8akoeso.apps.googleusercontent.com',
     iosBundleId: 'com.example.weChat',
   );
