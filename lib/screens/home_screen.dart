@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart.';
@@ -55,23 +56,21 @@ class _HomeScreenState extends State<HomeScreen> {
         child: StreamBuilder(
           stream: APIs.firestore.collection('users').snapshots(),
           builder: (context, snapshot) {
-            final list1 = [];
-            final list2 = [];
+            final list = [];
             if (snapshot.hasData) {
               final data = snapshot.data?.docs;
               for (var i in data!) {
-                log("Data: ${i.data()}");
-                list1.add(i.data()['name']);
-                list2.add(i.data()['about']);
+                log("Data: ${jsonEncode(i.data())}");
+                list.add(jsonEncode(i.data()['name']));
               }
             }
             return ListView.builder(
-              itemCount: list1.length,
+              itemCount: list.length,
               padding: EdgeInsets.symmetric(vertical: mq.height * 0.01),
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 // return const ChatUserCard();
-                return Text('Name: ${list1[index]}\nAbout: ${list2[index]}');
+                return Text('Name: ${list[index]}}');
               },
             );
           },
