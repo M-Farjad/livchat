@@ -10,6 +10,7 @@ import '../main.dart';
 import '../models/chat_user.dart';
 import '../widgets/chat_user_card.dart';
 import 'auth/login_screen.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,7 +36,15 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.search),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => ProfileScreen(
+                          user: list[0],
+                        )),
+              );
+            },
             icon: const Icon(Icons.more_vert),
           )
         ],
