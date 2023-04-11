@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart.';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:livchat/helper/dialogs.dart';
 
 import '../api/apis.dart';
 import '../main.dart';
@@ -24,18 +25,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("User-Profile"),
-        ),
+        appBar: AppBar(title: const Text("User-Profile")),
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom: 10),
           child: FloatingActionButton.extended(
             onPressed: () async {
               // _signOut() async {
-              await APIs.auth.signOut();
-              await GoogleSignIn().signOut();
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (_) => const LoginScreen()));
+              Dialogs.showProgressbar(context);
+              await APIs.auth.signOut().then((value) async {
+                await GoogleSignIn().signOut().then((value) {
+                  //for hiding progress dialog
+                  Navigator.pop(context);
+                  //for moving Home Screen
+                  Navigator.pop(context);
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (_) => LoginScreen()));
+                });
+              });
+
+              // Navigator.pushReplacement(context,
+              //     MaterialPageRoute(builder: (_) => const LoginScreen()));
               // }
             },
             label: const Text('Logout'),
@@ -49,18 +58,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               //for adding some space
               SizedBox(width: mq.width, height: mq.height * 0.03),
-              ClipRRect(
-                //!for removing unnecessary corners in images
-                borderRadius: BorderRadius.circular(mq.height * 0.1),
-                child: CachedNetworkImage(
-                  width: mq.height * .2,
-                  height: mq.height * .2,
-                  fit: BoxFit.fill,
-                  imageUrl: widget.user.image,
-                  // placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) =>
-                      const CircleAvatar(child: Icon(CupertinoIcons.person)),
-                ),
+              Stack(
+                children: [
+                  ClipRRect(
+                    //!for removing unnecessary corners in images
+                    borderRadius: BorderRadius.circular(mq.height * 0.1),
+                    child: CachedNetworkImage(
+                      width: mq.height * .2,
+                      height: mq.height * .2,
+                      fit: BoxFit.fill,
+                      imageUrl: widget.user.image,
+                      // placeholder: (context, url) => CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => const CircleAvatar(
+                          child: Icon(CupertinoIcons.person)),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: MaterialButton(
+                      onPressed: () {},
+                      color: Colors.white,
+                      shape: CircleBorder(),
+                      child: Icon(
+                        Icons.edit_note_sharp,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  )
+                ],
               ),
               //for adding some space
               SizedBox(height: mq.height * 0.03),
