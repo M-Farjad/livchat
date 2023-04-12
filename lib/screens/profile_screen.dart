@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   //for moving Home Screen
                   Navigator.pop(context);
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) => LoginScreen()));
+                      MaterialPageRoute(builder: (_) => const LoginScreen()));
                 });
               });
 
@@ -82,9 +82,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       bottom: 0,
                       right: 0,
                       child: MaterialButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _showBottonSheet();
+                        },
                         color: Colors.white,
-                        shape: CircleBorder(),
+                        shape: const CircleBorder(),
                         child: Icon(
                           Icons.edit_note_sharp,
                           color: Theme.of(context).primaryColor,
@@ -146,14 +148,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         });
                       }
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.edit,
                       size: 28,
                     ),
                     style: ElevatedButton.styleFrom(
-                        shape: StadiumBorder(),
+                        shape: const StadiumBorder(),
                         minimumSize: Size(mq.width * 0.5, mq.height * .06)),
-                    label: Text(
+                    label: const Text(
                       'Update',
                       style: TextStyle(fontSize: 16),
                     ))
@@ -163,5 +165,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  void _showBottonSheet() {
+    showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        builder: (_) {
+          return ListView(
+            padding: EdgeInsets.symmetric(vertical: mq.height * .03),
+            shrinkWrap: true,
+            children: [
+              const Text(
+                'Pick Profile Picture',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: mq.height * .02),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        backgroundColor: Colors.white,
+                        fixedSize: Size(mq.width * .3, mq.height * .15)),
+                    onPressed: () {},
+                    child: Image.asset('assets/images/camera.png'),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        backgroundColor: Colors.white,
+                        fixedSize: Size(mq.width * .3, mq.height * .15)),
+                    onPressed: () {},
+                    child: Image.asset('assets/images/add-image.png'),
+                  ),
+                ],
+              )
+            ],
+          );
+        });
   }
 }
