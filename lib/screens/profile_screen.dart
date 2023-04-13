@@ -189,73 +189,76 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _showBottonSheet() {
     showModalBottomSheet(
-        context: context,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
-        builder: (_) {
-          return ListView(
-            padding: EdgeInsets.symmetric(vertical: mq.height * .03),
-            shrinkWrap: true,
-            children: [
-              const Text(
-                'Pick Profile Picture',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: mq.height * .02),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white,
-                        fixedSize: Size(mq.width * .3, mq.height * .15)),
-                    onPressed: () async {
-                      final ImagePicker picker = ImagePicker();
-                      // Pick an image.
-                      final XFile? image =
-                          await picker.pickImage(source: ImageSource.camera);
-                      if (image != null) {
-                        log("Image Path: ${image.path}");
-                        setState(() {
-                          _image = image.path;
-                        });
-                        // For hiding bottom sheet
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: Image.asset('assets/images/camera.png'),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        backgroundColor: Colors.white,
-                        fixedSize: Size(mq.width * .3, mq.height * .15)),
-                    onPressed: () async {
-                      final ImagePicker picker = ImagePicker();
-                      // Pick an image.
-                      final XFile? image =
-                          await picker.pickImage(source: ImageSource.gallery);
-                      if (image != null) {
-                        log("Image Path: ${image.path} -- MimeType: ${image.mimeType}");
-                        setState(() {
-                          _image = image.path;
-                        });
-                        // For hiding bottom sheet
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: Image.asset('assets/images/add-image.png'),
-                  ),
-                ],
-              )
-            ],
-          );
-        });
+      ),
+      builder: (_) {
+        return ListView(
+          padding: EdgeInsets.symmetric(vertical: mq.height * .03),
+          shrinkWrap: true,
+          children: [
+            const Text(
+              'Pick Profile Picture',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: mq.height * .02),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      backgroundColor: Colors.white,
+                      fixedSize: Size(mq.width * .3, mq.height * .15)),
+                  onPressed: () async {
+                    final ImagePicker picker = ImagePicker();
+                    // Pick an image.
+                    final XFile? image =
+                        await picker.pickImage(source: ImageSource.camera);
+                    if (image != null) {
+                      log("Image Path: ${image.path}");
+                      setState(() {
+                        _image = image.path;
+                      });
+                      APIs.updateProfilePic(File(_image!));
+                      // For hiding bottom sheet
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Image.asset('assets/images/camera.png'),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      backgroundColor: Colors.white,
+                      fixedSize: Size(mq.width * .3, mq.height * .15)),
+                  onPressed: () async {
+                    final ImagePicker picker = ImagePicker();
+                    // Pick an image.
+                    final XFile? image =
+                        await picker.pickImage(source: ImageSource.gallery);
+                    if (image != null) {
+                      log("Image Path: ${image.path} -- MimeType: ${image.mimeType}");
+                      setState(() {
+                        _image = image.path;
+                      });
+                      APIs.updateProfilePic(File(_image!));
+                      // For hiding bottom sheet
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Image.asset('assets/images/add-image.png'),
+                ),
+              ],
+            )
+          ],
+        );
+      },
+    );
   }
 }
