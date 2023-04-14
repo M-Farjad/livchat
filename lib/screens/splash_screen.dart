@@ -28,6 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
         //!For displaying the color that is shown at the bottom of the screen
         //?usually differs in android versions
         systemNavigationBarColor: Colors.white,
+        statusBarColor: Colors.white,
       ));
       if (APIs.auth.currentUser != null) {
         log('\nUser: ${APIs.auth.currentUser}');
