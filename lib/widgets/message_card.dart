@@ -63,9 +63,9 @@ class _MessageCardState extends State<MessageCard> {
       children: [
         Row(
           children: [
+            const SizedBox(width: 10),
             Icon(Icons.done_all_rounded,
                 color: kSecondaryMessageColor, size: 20),
-            const SizedBox(width: 2),
             Text(
               '${widget.message.read}12:00 am',
               style: TextStyle(
