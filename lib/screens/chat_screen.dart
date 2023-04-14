@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../api/apis.dart';
 import '../main.dart';
 import '../models/chat_user.dart';
 
@@ -23,18 +27,19 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Expanded(
               child: StreamBuilder(
-                // stream: APIs.getAllUsers(),
+                stream: APIs.getAllMessages(),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     //!if data is loading
                     // // if data is small then it will be loaded immediately
                     case ConnectionState.none:
                     case ConnectionState.waiting:
-                    // return const Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     //!if data is loaded
                     case ConnectionState.active:
                     case ConnectionState.done:
-                      // final data = snapshot.data?.docs;
+                      final data = snapshot.data?.docs;
+                      log('message: ${jsonEncode(data![0].data())}');
                       // _list = data
                       //         ?.map((e) => ChatUser.fromJson(e.data()))
                       //         .toList() ??

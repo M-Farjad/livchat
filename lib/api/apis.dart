@@ -79,4 +79,12 @@ class APIs {
       'image': me.image,
     });
   }
+
+  //********
+  //! Chat Screen Related APIs
+  //********
+  //!For getting all Messages of specific Conversation
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllMessages() {
+    return APIs.firestore.collection('messages').snapshots();
+  }
 }
