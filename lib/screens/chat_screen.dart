@@ -19,6 +19,9 @@ class _ChatScreenState extends State<ChatScreen> {
       child: Scaffold(
         appBar:
             AppBar(automaticallyImplyLeading: false, flexibleSpace: _appBar()),
+        body: Column(
+          children: [_chatInput()],
+        ),
       ),
     );
   }
@@ -32,7 +35,7 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
             onPressed: () => Navigator.pop(context),
             icon: const Icon(CupertinoIcons.back),
-            color: Colors.black54,
+            color: Theme.of(context).primaryColor,
           ),
           //User Profile Picture
           ClipRRect(
@@ -63,6 +66,74 @@ class _ChatScreenState extends State<ChatScreen> {
               const Text('Last seen not available',
                   style: TextStyle(fontSize: 13, color: Colors.black54)),
             ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _chatInput() {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: mq.width * 0.025, vertical: mq.height * .01),
+      child: Row(
+        children: [
+          //!Input Field & Buttons
+          Expanded(
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              child: Row(
+                children: [
+                  //Icon Button
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.emoji_emotions_outlined, size: 26),
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  //Expanded to specify TextField width
+                  Expanded(
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Message ...',
+                        hintStyle:
+                            TextStyle(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                  ),
+                  //Gallery Button
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.image_outlined, size: 26),
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  //Camera Button
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.camera_alt_outlined, size: 26),
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  SizedBox(width: mq.width * .02)
+                ],
+              ),
+            ),
+          ),
+          //Message Send button
+          MaterialButton(
+            minWidth: 0,
+            onPressed: () {},
+            child: Icon(
+              Icons.send,
+              size: 28,
+              color: Colors.white,
+            ),
+            color: Theme.of(context).primaryColor,
+            shape: CircleBorder(),
+            padding:
+                const EdgeInsets.only(bottom: 10, right: 5, left: 10, top: 10),
           )
         ],
       ),
