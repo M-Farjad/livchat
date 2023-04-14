@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import '../api/apis.dart';
 import '../main.dart';
 import '../models/chat_user.dart';
+import '../models/message_model.dart';
+import '../widgets/message_card.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key, required this.user});
@@ -17,12 +19,14 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  List<MessageModel> _list = [];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar:
             AppBar(automaticallyImplyLeading: false, flexibleSpace: _appBar()),
+        backgroundColor: Color.fromARGB(255, 227, 255, 228),
         body: Column(
           children: [
             Expanded(
@@ -44,7 +48,21 @@ class _ChatScreenState extends State<ChatScreen> {
                       //         ?.map((e) => ChatUser.fromJson(e.data()))
                       //         .toList() ??
                       //     [];
-                      final _list = ['Hello', 'Hi'];
+                      _list.clear();
+                      _list.add(MessageModel(
+                          msg: 'Hello',
+                          toID: 'xyz',
+                          read: '',
+                          type: Type.text,
+                          fromID: APIs.user.uid,
+                          sent: '12:00 AM'));
+                      _list.add(MessageModel(
+                          msg: 'Hii',
+                          toID: APIs.user.uid,
+                          read: '',
+                          type: Type.text,
+                          fromID: 'xyz',
+                          sent: '12:05 AM'));
                       if (_list.isNotEmpty) {
                         return ListView.builder(
                           itemCount: _list.length,
@@ -52,7 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               EdgeInsets.symmetric(vertical: mq.height * 0.01),
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return Text('Message: ${_list[index]}');
+                            return MessageCard(message: _list[index]);
                           },
                         );
                       } else {
@@ -90,6 +108,7 @@ class _ChatScreenState extends State<ChatScreen> {
               width: mq.height * .05,
               height: mq.height * .05,
               imageUrl: widget.user.image,
+              fit: BoxFit.cover,
               // placeholder: (context, url) => CircularProgressIndicator(),
               errorWidget: (context, url, error) =>
                   const CircleAvatar(child: Icon(CupertinoIcons.person)),
