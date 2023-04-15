@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:livchat/api/apis.dart';
 import 'package:livchat/main.dart';
 
 import '../constants/constants.dart';
+import '../helper/my_date_util.dart';
 import '../models/message_model.dart';
 
 class MessageCard extends StatefulWidget {
@@ -22,6 +25,10 @@ class _MessageCardState extends State<MessageCard> {
 
   //!Sender or Another user message
   Widget _blueMessage() {
+    if (widget.message.read.isEmpty) {
+      APIs.updateMessageReadStatus(widget.message);
+      // log('read Message Updated');
+    }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -47,7 +54,8 @@ class _MessageCardState extends State<MessageCard> {
         Padding(
           padding: EdgeInsets.only(bottom: mq.height * .01),
           child: Text(
-            widget.message.sent,
+            MyDateUtil.getFormattedTime(
+                context: context, time: widget.message.sent),
             style: TextStyle(fontSize: 13, color: kSecondaryMessageColor),
           ),
         )
@@ -64,10 +72,12 @@ class _MessageCardState extends State<MessageCard> {
         Row(
           children: [
             const SizedBox(width: 10),
-            Icon(Icons.done_all_rounded,
-                color: kSecondaryMessageColor, size: 20),
+            if (widget.message.read.isNotEmpty)
+              Icon(Icons.done_all_rounded,
+                  color: kSecondaryMessageColor, size: 20),
             Text(
-              '${widget.message.read}12:00 am',
+              MyDateUtil.getFormattedTime(
+                  context: context, time: widget.message.sent),
               style: TextStyle(
                   fontSize: 13, color: Theme.of(context).primaryColor),
             ),
