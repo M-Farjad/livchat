@@ -99,6 +99,16 @@ class APIs {
         .snapshots();
   }
 
+  //!For getting only Last Message of specific Conversation
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getLastMessages(
+      ChatUser user) {
+    return firestore
+        .collection('chats/${getConversationalID(user.id)}/messages/')
+        .limit(1)
+        .orderBy('sent', descending: true)
+        .snapshots();
+  }
+
   static Future<void> sendMessage(ChatUser chatUser, String msg) async {
     //message sending time (used as id)
     final time = DateTime.now().millisecondsSinceEpoch.toString();
