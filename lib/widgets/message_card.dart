@@ -60,8 +60,10 @@ class _MessageCardState extends State<MessageCard> {
                     child: CachedNetworkImage(
                       // height: mq.height * .05,
                       imageUrl: widget.message.msg,
-                      placeholder: (context, url) =>
-                          CircularProgressIndicator(strokeWidth: 2),
+                      placeholder: (context, url) => const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
                       errorWidget: (context, url, error) => const CircleAvatar(
                           child: Icon(CupertinoIcons.person)),
                     ),
@@ -128,8 +130,10 @@ class _MessageCardState extends State<MessageCard> {
                     child: CachedNetworkImage(
                       // height: mq.height * .05,
                       imageUrl: widget.message.msg,
-                      placeholder: (context, url) =>
-                          CircularProgressIndicator(strokeWidth: 2),
+                      placeholder: (context, url) => const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
                       errorWidget: (context, url, error) => const CircleAvatar(
                           child: Icon(CupertinoIcons.person)),
                     ),

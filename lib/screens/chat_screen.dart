@@ -22,8 +22,9 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   List<MessageModel> _list = [];
-  // for showing the value of showing or hiding emoji
-  bool _showEmoji = false;
+  // _showEmoji for showing the value of showing or hiding emoji
+  //_isUploading for checking if image is uploading or not
+  bool _showEmoji = false, _isUploading = false;
 
   //for handling text message changes
   final _textController = TextEditingController();
@@ -69,6 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               [];
                           if (_list.isNotEmpty) {
                             return ListView.builder(
+                              reverse: true,
                               itemCount: _list.length,
                               padding: EdgeInsets.symmetric(
                                   vertical: mq.height * 0.01),
@@ -86,6 +88,15 @@ class _ChatScreenState extends State<ChatScreen> {
                     },
                   ),
                 ),
+                if (_isUploading)
+                  const Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
                 _chatInput(),
                 if (_showEmoji)
                   SizedBox(
@@ -182,8 +193,9 @@ class _ChatScreenState extends State<ChatScreen> {
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       onTap: () {
-                        if (_showEmoji)
+                        if (_showEmoji) {
                           setState(() => _showEmoji = !_showEmoji);
+                        }
                       },
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -195,7 +207,19 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   //Gallery Button
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      final ImagePicker picker = ImagePicker();
+                      //picking Multiple pics
+                      final List<XFile> images =
+                          await picker.pickMultiImage(imageQuality: 70);
+                      for (var i in images) {
+                        log("Image Path: ${i.path}");
+                        setState(() => _isUploading = true);
+                        //uploading & sending images one by one
+                        await APIs.sendChatImages(widget.user, File(i.path));
+                        setState(() => _isUploading = false);
+                      }
+                    },
                     icon: const Icon(Icons.image_outlined, size: 26),
                     color: Theme.of(context).primaryColor,
                   ),
@@ -207,9 +231,10 @@ class _ChatScreenState extends State<ChatScreen> {
                           source: ImageSource.gallery, imageQuality: 70);
                       if (image != null) {
                         log("Image Path: ${image.path} -- MimeType: ${image.mimeType}");
-
+                        setState(() => _isUploading = true);
                         await APIs.sendChatImages(
                             widget.user, File(image.path));
+                        setState(() => _isUploading = false);
                       }
                     },
                     icon: const Icon(Icons.camera_alt_outlined, size: 26),
