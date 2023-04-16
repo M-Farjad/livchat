@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart.';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../api/apis.dart';
@@ -30,6 +31,18 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     APIs.getSelfInfo();
+    //!For Updating User Status to Active
+    APIs.updateActiveStatus(true);
+
+    //!For Updating User Status according to Lifecycle events
+    //resumed - Active or online
+    //paused - InActive or offline
+    SystemChannels.lifecycle.setMessageHandler((message) {
+      log('Message: $message');
+      if (message.toString().contains('paused')) APIs.updateActiveStatus(false);
+      if (message.toString().contains('resumed')) APIs.updateActiveStatus(true);
+      return Future.value(message);
+    });
   }
 
   @override

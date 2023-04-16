@@ -6,6 +6,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:livchat/helper/my_date_util.dart';
 
 import '../api/apis.dart';
 import '../main.dart';
@@ -119,49 +120,67 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget _appBar() {
     return InkWell(
-      onTap: () {},
-      child: Row(
-        children: [
-          //Back Button
-          IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(CupertinoIcons.back),
-            color: Theme.of(context).primaryColor,
-          ),
-          //User Profile Picture
-          ClipRRect(
-            //!for removing unnecessary corners in images
-            borderRadius: BorderRadius.circular(mq.height * 0.3),
-            child: CachedNetworkImage(
-              width: mq.height * .05,
-              height: mq.height * .05,
-              imageUrl: widget.user.image,
-              fit: BoxFit.cover,
-              // placeholder: (context, url) => CircularProgressIndicator(),
-              errorWidget: (context, url, error) =>
-                  const CircleAvatar(child: Icon(CupertinoIcons.person)),
-            ),
-          ),
-          SizedBox(width: 10),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.user.name,
-                style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87),
-              ),
-              const SizedBox(width: 2),
-              const Text('Last seen not available',
-                  style: TextStyle(fontSize: 13, color: Colors.black54)),
-            ],
-          )
-        ],
-      ),
-    );
+        onTap: () {},
+        child: StreamBuilder(
+          stream: APIs.getUserInfo(widget.user),
+          builder: (context, snapshot) {
+            final data = snapshot.data?.docs;
+            final list =
+                data?.map((e) => ChatUser.fromJson(e.data())).toList() ?? [];
+            return Row(
+              children: [
+                //Back Button
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(CupertinoIcons.back),
+                  color: Theme.of(context).primaryColor,
+                ),
+                //User Profile Picture
+                ClipRRect(
+                  //!for removing unnecessary corners in images
+                  borderRadius: BorderRadius.circular(mq.height * 0.3),
+                  child: CachedNetworkImage(
+                    width: mq.height * .05,
+                    height: mq.height * .05,
+                    imageUrl:
+                        list.isNotEmpty ? list[0].image : widget.user.image,
+                    fit: BoxFit.cover,
+                    // placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) =>
+                        const CircleAvatar(child: Icon(CupertinoIcons.person)),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      list.isNotEmpty ? list[0].name : widget.user.name,
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87),
+                    ),
+                    const SizedBox(width: 2),
+                    Text(
+                        list.isNotEmpty
+                            ? list[0].isOnline
+                                ? 'Online'
+                                : MyDateUtil.getLastActiveTime(
+                                    context: context,
+                                    lastActive: list[0].lastActive)
+                            : MyDateUtil.getLastActiveTime(
+                                context: context,
+                                lastActive: widget.user.lastActive),
+                        style: const TextStyle(
+                            fontSize: 13, color: Colors.black54)),
+                  ],
+                )
+              ],
+            );
+          },
+        ));
   }
 
   Widget _chatInput() {
