@@ -157,31 +157,36 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
                 SizedBox(width: 10),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      list.isNotEmpty ? list[0].name : widget.user.name,
-                      style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black87),
-                    ),
-                    const SizedBox(width: 2),
-                    Text(
-                        list.isNotEmpty
-                            ? list[0].isOnline
-                                ? 'Online'
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 15),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          list.isNotEmpty ? list[0].name : widget.user.name,
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87),
+                        ),
+                        const SizedBox(width: 2),
+                        Text(
+                            list.isNotEmpty
+                                ? list[0].isOnline
+                                    ? 'Online'
+                                    : MyDateUtil.getLastActiveTime(
+                                        context: context,
+                                        lastActive: list[0].lastActive)
                                 : MyDateUtil.getLastActiveTime(
                                     context: context,
-                                    lastActive: list[0].lastActive)
-                            : MyDateUtil.getLastActiveTime(
-                                context: context,
-                                lastActive: widget.user.lastActive),
-                        style: const TextStyle(
-                            fontSize: 13, color: Colors.black54)),
-                  ],
+                                    lastActive: widget.user.lastActive),
+                            style: const TextStyle(
+                                fontSize: 13, color: Colors.black54)),
+                      ],
+                    ),
+                  ),
                 )
               ],
             );

@@ -9,6 +9,7 @@ import 'package:livchat/models/message_model.dart';
 import '../main.dart';
 import '../models/chat_user.dart';
 import '../screens/chat_screen.dart';
+import 'dialogs/profile_dialog.dart';
 
 class ChatUserCard extends StatefulWidget {
   const ChatUserCard({super.key, required this.user});
@@ -45,17 +46,24 @@ class _ChatUserCardState extends State<ChatUserCard> {
             }
             return ListTile(
               //user image
-              leading: ClipRRect(
-                //!for removing unnecessary corners in images
-                borderRadius: BorderRadius.circular(mq.height * 0.3),
-                child: CachedNetworkImage(
-                  width: mq.height * .055,
-                  height: mq.height * .055,
-                  imageUrl: widget.user.image,
-                  fit: BoxFit.cover,
-                  // placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) =>
-                      const CircleAvatar(child: Icon(CupertinoIcons.person)),
+              leading: InkWell(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (_) => ProfileDialog(user: widget.user));
+                },
+                child: ClipRRect(
+                  //!for removing unnecessary corners in images
+                  borderRadius: BorderRadius.circular(mq.height * 0.3),
+                  child: CachedNetworkImage(
+                    width: mq.height * .055,
+                    height: mq.height * .055,
+                    imageUrl: widget.user.image,
+                    fit: BoxFit.cover,
+                    // placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) =>
+                        const CircleAvatar(child: Icon(CupertinoIcons.person)),
+                  ),
                 ),
               ),
               //user name
