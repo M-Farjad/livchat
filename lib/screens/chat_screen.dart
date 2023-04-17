@@ -13,6 +13,7 @@ import '../main.dart';
 import '../models/chat_user.dart';
 import '../models/message_model.dart';
 import '../widgets/message_card.dart';
+import 'about_screen.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key, required this.user});
@@ -120,7 +121,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget _appBar() {
     return InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => AboutScreen(user: widget.user)));
+        },
         child: StreamBuilder(
           stream: APIs.getUserInfo(widget.user),
           builder: (context, snapshot) {

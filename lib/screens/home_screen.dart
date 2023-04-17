@@ -39,8 +39,14 @@ class _HomeScreenState extends State<HomeScreen> {
     //paused - InActive or offline
     SystemChannels.lifecycle.setMessageHandler((message) {
       log('Message: $message');
-      if (message.toString().contains('paused')) APIs.updateActiveStatus(false);
-      if (message.toString().contains('resumed')) APIs.updateActiveStatus(true);
+      if (APIs.auth.currentUser != null) {
+        if (message.toString().contains('paused')) {
+          APIs.updateActiveStatus(false);
+        }
+        if (message.toString().contains('resumed')) {
+          APIs.updateActiveStatus(true);
+        }
+      }
       return Future.value(message);
     });
   }
