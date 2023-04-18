@@ -1,4 +1,5 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -6,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:http/http.dart';
 import 'package:livchat/models/message_model.dart';
 
 import '../models/chat_user.dart';
@@ -21,6 +23,28 @@ class APIs {
           if (t != null) me.pushToken = t,
           log('Push Token: $t'),
         });
+  }
+
+  static Future<void> sendPushNotification(
+      ChatUser chatUser, String message) async {
+    // var url = Uri.https('example.com', 'whatsit/create');
+    try {
+      final body = {
+        "to": chatUser.pushToken,
+        "notification": {"title": me.name, "body": message}
+      };
+      var res = await post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
+          body: jsonEncode(body),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader:
+                'key=AAAAWY6Y6f4:APA91bG9QycyfUxErXiQmDYEA1M0TOYlwrmL1urAkkjZl4hjz2z1VKdXi_oCp9-b9CCbSNDs8GojZE5mBBkmyY8-NdU4paejIYeXyivyAmHOgoCL2XhHk8O8mOfiwoB5SmMNdVnHPnKQ',
+          });
+      log('Response status: ${res.statusCode}');
+      log('Response body: ${res.body}');
+    } catch (e) {
+      log('\nSendNotificationErr: $e');
+    }
   }
 
   //?For storing current user info
@@ -154,7 +178,8 @@ class APIs {
         sent: time);
     final ref = firestore
         .collection('chats/${getConversationalID(chatUser.id)}/messages/');
-    await ref.doc(time).set(message.toJson());
+    await ref.doc(time).set(message.toJson()).then((value) =>
+        sendPushNotification(chatUser, type == Type.text ? msg : 'image'));
   }
 
   //Read Double check
