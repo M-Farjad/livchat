@@ -20,6 +20,7 @@ dependencies:
   image_picker: ^0.8.7+2
   firebase_storage: ^11.1.0   #for accessing storage for images
   emoji_picker_flutter: ^1.5.4 #for showing Custom emojis
+  firebase_messaging: ^14.4.0 #for accessing firebase Push Notifications
 
 dev_dependencies:
   flutter_test:
