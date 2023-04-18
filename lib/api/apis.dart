@@ -23,7 +23,18 @@ class APIs {
           if (t != null) me.pushToken = t,
           log('Push Token: $t'),
         });
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   log('Got a message whilst in the foreground!');
+    //   log('Message data: ${message.data}');
+
+    //   if (message.notification != null) {
+    //     log('Message also contained a notification: ${message.notification}');
+    //   }
+    // });
   }
+
+  //?For storing current user info
+  static late ChatUser me;
 
   static Future<void> sendPushNotification(
       ChatUser chatUser, String message) async {
@@ -31,7 +42,14 @@ class APIs {
     try {
       final body = {
         "to": chatUser.pushToken,
-        "notification": {"title": me.name, "body": message}
+        "notification": {
+          "title": chatUser.name,
+          "body": message,
+          "android_channel_id": "chats",
+        },
+        "data": {
+          "some_data": "User_id: ${me.id}",
+        },
       };
       var res = await post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
           body: jsonEncode(body),
@@ -46,9 +64,6 @@ class APIs {
       log('\nSendNotificationErr: $e');
     }
   }
-
-  //?For storing current user info
-  static late ChatUser me;
 
   static User get user => auth.currentUser!;
   //?For checking if user exists or not

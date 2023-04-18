@@ -1,6 +1,11 @@
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_notification_channel/flutter_notification_channel.dart';
+import 'package:flutter_notification_channel/notification_importance.dart';
+import 'package:flutter_notification_channel/notification_visibility.dart';
 import 'firebase_options.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/splash_screen.dart';
@@ -46,6 +51,14 @@ class MyApp extends StatelessWidget {
 
 _initializeFireBase() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  var result = await FlutterNotificationChannel.registerNotificationChannel(
+    description: 'For Showing Message Notifications',
+    id: 'chats',
+    importance: NotificationImportance.IMPORTANCE_HIGH,
+    name: 'Chats',
+  );
+  log(result);
 }
 // Firebase token: 1//03Rrc0MOMm9KsCgYIARAAGAMSNwF-L9IrFNRA4W1ft9GBgkds-OCmsGsvn50K69yxzd8hC5xtVL4LSoIojXidkVRSeGExDqRrYOY 
 // Platform  Firebase App Id
