@@ -20,9 +20,13 @@ class MessageCard extends StatefulWidget {
 class _MessageCardState extends State<MessageCard> {
   @override
   Widget build(BuildContext context) {
-    return APIs.user.uid == widget.message.fromID
-        ? _greenMessage()
-        : _blueMessage();
+    bool isME = APIs.user.uid == widget.message.fromID;
+    return InkWell(
+      onLongPress: () {
+        _showBottonSheet(isME);
+      },
+      child: isME ? _greenMessage() : _blueMessage(),
+    );
   }
 
   //!Sender or Another user message
@@ -141,6 +145,110 @@ class _MessageCardState extends State<MessageCard> {
           ),
         ),
       ],
+    );
+  }
+
+  //!Bottom Sheet for modifying message details
+  void _showBottonSheet(bool isMe) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      builder: (_) {
+        return ListView(
+          shrinkWrap: true,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey, borderRadius: BorderRadius.circular(8)),
+              margin: EdgeInsets.symmetric(
+                  horizontal: mq.width * .4, vertical: mq.height * .015),
+              height: 4,
+            ),
+            widget.message.type == Type.text
+                ? _OptionItem(
+                    icon: Icon(Icons.copy_rounded,
+                        color: kPrimaryColor, size: 26),
+                    name: "Copy",
+                    onTap: () {},
+                  )
+                : _OptionItem(
+                    icon: Icon(Icons.download_for_offline_outlined,
+                        color: kPrimaryColor, size: 26),
+                    name: "Download",
+                    onTap: () {},
+                  ),
+            if (isMe)
+              Divider(
+                  endIndent: mq.height * .04,
+                  indent: mq.height * .04,
+                  color: Colors.black54),
+            if (widget.message.type == Type.text && isMe)
+              _OptionItem(
+                icon: Icon(Icons.edit_note_rounded,
+                    color: kSecondaryMessageColor, size: 26),
+                name: "Edit",
+                onTap: () {},
+              ),
+            if (isMe)
+              _OptionItem(
+                icon: const Icon(Icons.delete_outline_rounded,
+                    color: Colors.red, size: 26),
+                name: "Delete",
+                onTap: () {},
+              ),
+            Divider(
+                endIndent: mq.height * .04,
+                indent: mq.height * .04,
+                color: Colors.black54),
+            _OptionItem(
+              icon: const Icon(
+                Icons.send_rounded,
+                color: Colors.grey,
+              ),
+              name: "Sent",
+              onTap: () {},
+            ),
+            _OptionItem(
+              icon: const Icon(Icons.remove_red_eye_outlined),
+              name: "Read",
+              onTap: () {},
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _OptionItem extends StatelessWidget {
+  const _OptionItem(
+      {required this.icon, required this.name, required this.onTap});
+  final Icon icon;
+  final String name;
+  final VoidCallback onTap;
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: mq.width * .08, vertical: mq.height * .015),
+        child: Row(
+          children: [
+            icon,
+            Flexible(
+                child: Text(
+              "    $name",
+              style: const TextStyle(letterSpacing: 1, fontSize: 16),
+            )),
+          ],
+        ),
+      ),
     );
   }
 }
