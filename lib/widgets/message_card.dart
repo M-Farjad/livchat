@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:livchat/api/apis.dart';
 import 'package:livchat/main.dart';
 
 import '../constants/constants.dart';
+import '../helper/dialogs.dart';
 import '../helper/my_date_util.dart';
 import '../models/message_model.dart';
 
@@ -174,7 +176,15 @@ class _MessageCardState extends State<MessageCard> {
                     icon: Icon(Icons.copy_rounded,
                         color: kPrimaryColor, size: 26),
                     name: "Copy",
-                    onTap: () {},
+                    onTap: () async {
+                      await Clipboard.setData(
+                              ClipboardData(text: widget.message.msg))
+                          .then((value) {
+                        //for hiding bottom sheet
+                        Navigator.pop(context);
+                        Dialogs.showSnackbar(context, "Text Copied");
+                      });
+                    },
                   )
                 : _OptionItem(
                     icon: Icon(Icons.download_for_offline_outlined,
@@ -199,7 +209,13 @@ class _MessageCardState extends State<MessageCard> {
                 icon: const Icon(Icons.delete_outline_rounded,
                     color: Colors.red, size: 26),
                 name: "Delete",
-                onTap: () {},
+                onTap: () async {
+                  await APIs.deleteMessage(widget.message).then((value) {
+                    //for hiding bottom sheet
+                    Navigator.pop(context);
+                    Dialogs.showSnackbar(context, "Message Deleted");
+                  });
+                },
               ),
             Divider(
                 endIndent: mq.height * .04,
@@ -210,12 +226,20 @@ class _MessageCardState extends State<MessageCard> {
                 Icons.send_rounded,
                 color: Colors.grey,
               ),
-              name: "Sent",
+              name: "Sent at: ${MyDateUtil.getMessageTime(
+                context: context,
+                time: widget.message.sent,
+              )}",
               onTap: () {},
             ),
             _OptionItem(
               icon: const Icon(Icons.remove_red_eye_outlined),
-              name: "Read",
+              name: widget.message.read.isEmpty
+                  ? "Read: Not Read Yet"
+                  : "Read at: ${MyDateUtil.getMessageTime(
+                      context: context,
+                      time: widget.message.read,
+                    )}",
               onTap: () {},
             ),
           ],

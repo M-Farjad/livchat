@@ -197,6 +197,14 @@ class APIs {
         sendPushNotification(chatUser, type == Type.text ? msg : 'image'));
   }
 
+  static Future<void> deleteMessage(MessageModel msg) async {
+    await firestore
+        .collection('chats/${getConversationalID(msg.toID)}/messages/')
+        .doc(msg.sent)
+        .delete();
+    if (msg.type == Type.image) await storage.refFromURL(msg.msg).delete();
+  }
+
   //Read Double check
   static Future<void> updateMessageReadStatus(MessageModel msg) async {
     firestore
