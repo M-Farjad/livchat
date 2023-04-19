@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../api/apis.dart';
+import '../constants/constants.dart';
+import '../helper/dialogs.dart';
 import '../main.dart';
 import '../models/chat_user.dart';
 import '../widgets/chat_user_card.dart';
@@ -126,13 +128,8 @@ class _HomeScreenState extends State<HomeScreen> {
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: FloatingActionButton(
-              onPressed: () async {
-                // _signOut() async {
-                await APIs.auth.signOut();
-                await GoogleSignIn().signOut();
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (_) => const LoginScreen()));
-                // }
+              onPressed: () {
+                _showAddContactDialog();
               },
               child: const Icon(Icons.add_reaction_outlined),
             ),
@@ -181,6 +178,68 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void _showAddContactDialog() {
+    String email = '';
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Icon(CupertinoIcons.person_add, size: 28, color: kPrimaryColor),
+            const Text('  Add Contact'),
+          ],
+        ),
+        content: TextFormField(
+          onChanged: (value) => email = value,
+          decoration: InputDecoration(
+            hintText: 'email@example.com',
+            prefixIcon: Icon(Icons.email_outlined, color: kPrimaryColor),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+          ),
+          maxLines: null,
+        ),
+        actions: [
+          MaterialButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            // color: kLightPrimaryColor,
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                fontSize: 16,
+                color: kPrimaryColor,
+              ),
+            ),
+          ),
+          MaterialButton(
+            onPressed: () async {
+              // APIs.updateMessage(widget.message, updatedMessage);
+              Navigator.pop(context);
+              if (email.isNotEmpty) {
+                await APIs.addNewContact(email).then((value) {
+                  if (!value) {
+                    Dialogs.showSnackbar(context, 'User Does not Exist');
+                  }
+                });
+              }
+            },
+            child: Text(
+              'Add',
+              style: TextStyle(
+                fontSize: 16,
+                color: kPrimaryColor,
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

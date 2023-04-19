@@ -71,6 +71,26 @@ class APIs {
     return (await firestore.collection('users').doc(user.uid).get()).exists;
   }
 
+  //?For checking if user exists or not
+  static Future<bool> addNewContact(String email) async {
+    final data = await firestore
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get();
+    if (data.docs.isNotEmpty && data.docs.first.id != user.uid) {
+      firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('my_contacts')
+          .doc(data.docs.first.id)
+          .set({});
+      return true;
+    } else {
+      //user doesn't exist
+      return false;
+    }
+  }
+
   //?For getting current user info
   static Future<void> getSelfInfo() async {
     await firestore.collection('users').doc(user.uid).get().then((user) async {
