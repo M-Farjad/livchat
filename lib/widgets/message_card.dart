@@ -218,7 +218,11 @@ class _MessageCardState extends State<MessageCard> {
                 icon: Icon(Icons.edit_note_rounded,
                     color: kSecondaryMessageColor, size: 26),
                 name: "Edit",
-                onTap: () {},
+                onTap: () {
+                  //For hiding bottom sheet
+                  Navigator.pop(context);
+                  _showMessageUpdateDialog();
+                },
               ),
             if (isMe)
               _OptionItem(
@@ -261,6 +265,60 @@ class _MessageCardState extends State<MessageCard> {
           ],
         );
       },
+    );
+  }
+
+  void _showMessageUpdateDialog() {
+    String updatedMessage = widget.message.msg;
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Icon(Icons.message, size: 28, color: kPrimaryColor),
+            Text('  Edit Message'),
+          ],
+        ),
+        content: TextFormField(
+          initialValue: updatedMessage,
+          onChanged: (value) => updatedMessage = value,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+          ),
+          maxLines: null,
+        ),
+        actions: [
+          MaterialButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            // color: kLightPrimaryColor,
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                fontSize: 16,
+                color: kPrimaryColor,
+              ),
+            ),
+          ),
+          MaterialButton(
+            onPressed: () {
+              APIs.updateMessage(widget.message, updatedMessage);
+              Navigator.pop(context);
+            },
+            child: Text(
+              'Update',
+              style: TextStyle(
+                fontSize: 16,
+                color: kPrimaryColor,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

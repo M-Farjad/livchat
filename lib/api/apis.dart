@@ -205,6 +205,13 @@ class APIs {
     if (msg.type == Type.image) await storage.refFromURL(msg.msg).delete();
   }
 
+  static Future<void> updateMessage(MessageModel msg, String updatedMsg) async {
+    await firestore
+        .collection('chats/${getConversationalID(msg.toID)}/messages/')
+        .doc(msg.sent)
+        .update({'msg': updatedMsg});
+  }
+
   //Read Double check
   static Future<void> updateMessageReadStatus(MessageModel msg) async {
     firestore
