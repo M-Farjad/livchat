@@ -258,7 +258,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     onPressed: () async {
                       final ImagePicker picker = ImagePicker();
                       final XFile? image = await picker.pickImage(
-                          source: ImageSource.gallery, imageQuality: 70);
+                          source: ImageSource.camera, imageQuality: 70);
                       if (image != null) {
                         log("Image Path: ${image.path} -- MimeType: ${image.mimeType}");
                         setState(() => _isUploading = true);

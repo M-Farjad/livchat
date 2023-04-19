@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:flutter/services.dart';
 import 'package:livchat/api/apis.dart';
 import 'package:livchat/main.dart';
@@ -190,7 +191,22 @@ class _MessageCardState extends State<MessageCard> {
                     icon: Icon(Icons.download_for_offline_outlined,
                         color: kPrimaryColor, size: 26),
                     name: "Download",
-                    onTap: () {},
+                    onTap: () async {
+                      log("Image Url: ${widget.message.msg}");
+                      try {
+                        await GallerySaver.saveImage(widget.message.msg,
+                                albumName: 'Livchat')
+                            .then((success) {
+                          //for hiding bottom sheet
+                          Navigator.pop(context);
+                          if (success != null && success) {
+                            Dialogs.showSnackbar(context, "Image Saved");
+                          }
+                        });
+                      } catch (e) {
+                        log('Error Saving Image: $e');
+                      }
+                    },
                   ),
             if (isMe)
               Divider(

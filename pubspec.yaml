@@ -23,7 +23,7 @@ dependencies:
   firebase_messaging: ^14.4.0 #for accessing firebase Push Notifications
   http: ^0.13.5   #For calling RestAPIs
   flutter_notification_channel: ^2.0.0
-
+  gallery_saver: ^2.3.2   #For Storing Images in Gallery
 dev_dependencies:
   flutter_test:
     sdk: flutter
