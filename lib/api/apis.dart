@@ -77,7 +77,9 @@ class APIs {
         .collection('users')
         .where('email', isEqualTo: email)
         .get();
+    log('Data: ${data.docs}');
     if (data.docs.isNotEmpty && data.docs.first.id != user.uid) {
+      log("user exists: ${data.docs.first.data()}");
       firestore
           .collection('users')
           .doc(user.uid)
@@ -127,7 +129,7 @@ class APIs {
 
   //!For getting id's of known users from database
   static Stream<QuerySnapshot<Map<String, dynamic>>> getMyContactsID() {
-    return APIs.firestore
+    return firestore
         .collection('users')
         .doc(user.uid)
         .collection('my_contacts')
@@ -139,11 +141,22 @@ class APIs {
       List<String> contactIds) {
     log('UserIDs: $contactIds');
 
-    return APIs.firestore
+    return firestore
         .collection('users')
         // .where('id', isNotEqualTo: user.uid)
-        .where('id', whereIn: contactIds)
+        .where('id', whereIn: contactIds.isEmpty ? [''] : contactIds)
         .snapshots();
+  }
+
+  //!For updating user in database
+  static Future<void> sendFirstMessage(
+      ChatUser chatUser, String msg, Type type) async {
+    await firestore
+        .collection('users')
+        .doc(chatUser.id)
+        .collection('my_contacts')
+        .doc(user.uid)
+        .set({}).then((value) => sendMessage(chatUser, msg, type));
   }
 
   //!For updating user in database

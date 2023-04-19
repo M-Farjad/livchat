@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart.';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import '../api/apis.dart';
 import '../constants/constants.dart';
@@ -12,7 +10,6 @@ import '../helper/dialogs.dart';
 import '../main.dart';
 import '../models/chat_user.dart';
 import '../widgets/chat_user_card.dart';
-import 'auth/login_screen.dart';
 import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -135,67 +132,67 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           body: SafeArea(
-              child: StreamBuilder(
-            //get id of only known contacts
-            stream: APIs.getMyContactsID(),
-            builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-                //!if data is loading
-                // // if data is small then it will be loaded immediately
-                case ConnectionState.none:
-                case ConnectionState.waiting:
-                  return const Center(child: CircularProgressIndicator());
-                //!if data is loaded
-                case ConnectionState.active:
-                case ConnectionState.done:
-                  return StreamBuilder(
-                    //get onlt those users whose id is provided
-                    stream: APIs.getAllUsers(
-                        snapshot.data?.docs.map((e) => e.id).toList() ?? []),
-                    builder: (context, snapshot) {
-                      switch (snapshot.connectionState) {
-                        //!if data is loading
-                        // // if data is small then it will be loaded immediately
-                        case ConnectionState.none:
-                        case ConnectionState.waiting:
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        //!if data is loaded
-                        case ConnectionState.active:
-                        case ConnectionState.done:
-                          final data = snapshot.data?.docs;
-                          _list = data
-                                  ?.map((e) => ChatUser.fromJson(e.data()))
-                                  .toList() ??
-                              [];
-                          if (_list.isNotEmpty) {
-                            return ListView.builder(
-                              itemCount: _isSearching
-                                  ? _searchlist.length
-                                  : _list.length,
-                              padding: EdgeInsets.symmetric(
-                                  vertical: mq.height * 0.01),
-                              physics: const BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return ChatUserCard(
-                                    user: _isSearching
-                                        ? _searchlist[index]
-                                        : _list[index]);
-                              },
-                            );
-                          } else {
-                            return const Center(
-                                child: Text(
-                              'No Connections found.',
-                              style: TextStyle(fontSize: 20),
-                            ));
-                          }
-                      }
-                    },
-                  );
-              }
-            },
-          )),
+            child: StreamBuilder(
+              stream: APIs.getMyContactsID(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  //!if data is loading
+                  // // if data is small then it will be loaded immediately
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return const Center(child: CircularProgressIndicator());
+                  //!if data is loaded
+                  case ConnectionState.active:
+                  case ConnectionState.done:
+                    return StreamBuilder(
+                      stream: APIs.getAllUsers(
+                          snapshot.data?.docs.map((e) => e.id).toList() ?? []),
+                      //get only those users whose id is provided
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          //!if data is loading
+                          // // if data is small then it will be loaded immediately
+                          case ConnectionState.none:
+                          case ConnectionState.waiting:
+                          // return const Center(
+                          //     child: CircularProgressIndicator());
+                          //!if data is loaded
+                          case ConnectionState.active:
+                          case ConnectionState.done:
+                            final data = snapshot.data?.docs;
+                            _list = data
+                                    ?.map((e) => ChatUser.fromJson(e.data()))
+                                    .toList() ??
+                                [];
+                            if (_list.isNotEmpty) {
+                              return ListView.builder(
+                                itemCount: _isSearching
+                                    ? _searchlist.length
+                                    : _list.length,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: mq.height * 0.01),
+                                physics: const BouncingScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return ChatUserCard(
+                                      user: _isSearching
+                                          ? _searchlist[index]
+                                          : _list[index]);
+                                },
+                              );
+                            } else {
+                              return const Center(
+                                  child: Text(
+                                'No Connections found.',
+                                style: TextStyle(fontSize: 20),
+                              ));
+                            }
+                        }
+                      },
+                    );
+                }
+              },
+            ),
+          ),
         ),
       ),
     );
