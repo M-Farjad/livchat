@@ -39,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
         log('\nUser: ${user.user}');
         log('\nUser AdditionalInfo: ${user.additionalUserInfo}');
         if ((await APIs.userExists())) {
+          // ignore: use_build_context_synchronously
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => const HomeScreen()));
         } else {
@@ -82,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(

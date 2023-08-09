@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_notification_channel/flutter_notification_channel.dart';
 import 'package:flutter_notification_channel/notification_importance.dart';
-import 'package:flutter_notification_channel/notification_visibility.dart';
 import 'firebase_options.dart';
-import 'screens/auth/login_screen.dart';
+
 import 'screens/splash_screen.dart';
 
 late Size mq;

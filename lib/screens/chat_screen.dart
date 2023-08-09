@@ -47,7 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Scaffold(
           appBar: AppBar(
               automaticallyImplyLeading: false, flexibleSpace: _appBar()),
-          backgroundColor: Color.fromARGB(255, 227, 255, 228),
+          backgroundColor: const Color.fromARGB(255, 227, 255, 228),
           body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Column(
@@ -156,7 +156,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         const CircleAvatar(child: Icon(CupertinoIcons.person)),
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Flexible(
                   child: Padding(
                     padding: const EdgeInsets.only(right: 15),
@@ -290,15 +290,15 @@ class _ChatScreenState extends State<ChatScreen> {
                 _textController.text = '';
               }
             },
-            child: Icon(
+            color: Theme.of(context).primaryColor,
+            shape: const CircleBorder(),
+            padding:
+                const EdgeInsets.only(bottom: 10, right: 5, left: 10, top: 10),
+            child: const Icon(
               Icons.send,
               size: 28,
               color: Colors.white,
             ),
-            color: Theme.of(context).primaryColor,
-            shape: CircleBorder(),
-            padding:
-                const EdgeInsets.only(bottom: 10, right: 5, left: 10, top: 10),
           )
         ],
       ),

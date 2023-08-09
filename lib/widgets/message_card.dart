@@ -277,7 +277,7 @@ class _MessageCardState extends State<MessageCard> {
         title: Row(
           children: [
             Icon(Icons.message, size: 28, color: kPrimaryColor),
-            Text('  Edit Message'),
+            const Text('  Edit Message'),
           ],
         ),
         content: TextFormField(

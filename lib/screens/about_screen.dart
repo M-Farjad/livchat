@@ -1,21 +1,10 @@
-import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart.';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:livchat/helper/dialogs.dart';
 
-import '../api/apis.dart';
 import '../helper/my_date_util.dart';
 import '../main.dart';
 import '../models/chat_user.dart';
-import '../widgets/chat_user_card.dart';
-import 'auth/login_screen.dart';
 
 //!About screen to view about info of user
 class AboutScreen extends StatefulWidget {

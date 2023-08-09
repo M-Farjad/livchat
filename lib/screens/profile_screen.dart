@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -13,7 +12,6 @@ import 'package:livchat/helper/dialogs.dart';
 import '../api/apis.dart';
 import '../main.dart';
 import '../models/chat_user.dart';
-import '../widgets/chat_user_card.dart';
 import 'auth/login_screen.dart';
 
 //!profile screen to show signed in user info
@@ -231,6 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       });
                       APIs.updateProfilePic(File(_image!));
                       // For hiding bottom sheet
+                      // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                     }
                   },
@@ -253,6 +252,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       });
                       APIs.updateProfilePic(File(_image!));
                       // For hiding bottom sheet
+                      // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                     }
                   },

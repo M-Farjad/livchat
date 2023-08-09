@@ -31,8 +31,11 @@ class MyDateUtil {
     final DateTime now = DateTime.now();
 
     String formattedTime = TimeOfDay.fromDateTime(sent).format(context);
-    if (sent.day == now.day && sent.month == now.month && sent.year == now.year)
+    if (sent.day == now.day &&
+        sent.month == now.month &&
+        sent.year == now.year) {
       return formattedTime;
+    }
     return now.year == sent.year
         ? '$formattedTime - ${sent.day}  ${_getMonth(sent)}'
         : '$formattedTime - ${sent.day}  ${_getMonth(sent)} ${sent.year}';
@@ -49,15 +52,18 @@ class MyDateUtil {
     DateTime now = DateTime.now();
 
     String formattedTime = TimeOfDay.fromDateTime(time).format(context);
-    if (time.day == now.day && time.month == now.month && time.year == now.year)
+    if (time.day == now.day &&
+        time.month == now.month &&
+        time.year == now.year) {
       return 'Last seen today at $formattedTime';
+    }
 
     if ((now.difference(time).inHours / 24).round() == 1) {
       return 'Last seen yesterday at $formattedTime';
     }
 
     String month = _getMonth(time);
-    return 'Last seen on ${time.day} $month on ${formattedTime}';
+    return 'Last seen on ${time.day} $month on $formattedTime';
   }
 
   static String _getMonth(DateTime date) {
